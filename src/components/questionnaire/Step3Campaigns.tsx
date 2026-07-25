@@ -1,7 +1,12 @@
 import { StepShell, QuestionBlock } from './StepShell'
 import { SelectableCard } from '../ui/SelectableCard'
 import { NumberInput, PercentInput, FieldWrapper } from '../ui/Field'
-import { CAMPAIGNS_PER_WEEK_OPTIONS, CAMPAIGN_TYPE_OPTIONS, SEND_CONSISTENCY_OPTIONS } from '../../audit/questions'
+import {
+  CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION,
+  CAMPAIGNS_PER_WEEK_NUMERIC_OPTIONS,
+  CAMPAIGN_TYPE_OPTIONS,
+  SEND_CONSISTENCY_OPTIONS,
+} from '../../audit/questions'
 import type { Step3Answers } from '../../audit/types'
 
 interface Step3Props {
@@ -21,8 +26,8 @@ export function Step3Campaigns({ value, onChange }: Step3Props) {
     <StepShell title="How Are You Using Campaigns?" subtitle="Flows only reach subscribers who take an action. Campaigns are what reach everyone else.">
       <QuestionBlock label="How many unique email campaigns do you typically send per week?">
         <p className="text-xs text-white/40 -mt-2 mb-3">Resends to non-openers don't count as a separate unique campaign.</p>
-        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5">
-          {CAMPAIGNS_PER_WEEK_OPTIONS.map((opt) => (
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+          {CAMPAIGNS_PER_WEEK_NUMERIC_OPTIONS.map((opt) => (
             <SelectableCard
               key={opt.value}
               label={opt.label}
@@ -31,6 +36,13 @@ export function Step3Campaigns({ value, onChange }: Step3Props) {
               compact
             />
           ))}
+        </div>
+        <div className="mt-2.5">
+          <SelectableCard
+            label={CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.label}
+            selected={value.campaignsPerWeek === CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.value}
+            onClick={() => onChange({ campaignsPerWeek: CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.value })}
+          />
         </div>
       </QuestionBlock>
 

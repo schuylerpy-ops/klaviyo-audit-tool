@@ -1,5 +1,5 @@
 export const BRAND = {
-  name: 'Influx Labs',
+  name: 'InfluxLabz',
   productName: 'Klaviyo Health Audit',
   tagline: 'Ecommerce email & SMS retention strategy',
 } as const

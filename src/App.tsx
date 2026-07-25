@@ -3,14 +3,18 @@ import { LandingPage } from './pages/LandingPage'
 import { InstantAuditPage } from './pages/InstantAuditPage'
 import { CompleteAuditPage } from './pages/CompleteAuditPage'
 import { AnalyzingPage } from './pages/AnalyzingPage'
+import { LeadCapturePage } from './pages/LeadCapturePage'
 import { ResultsPage } from './pages/ResultsPage'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { runAudit, runInstantAudit } from './audit/engine'
+import { buildAuditLeadPayload } from './audit/leadPayload'
 import { createEmptyCompleteAuditAnswers, createEmptyInstantAuditAnswers } from './audit/types'
 import { getDemoCompleteAuditAnswers } from './data/demoAccount'
-import type { CompleteAuditAnswers, InstantAuditAnswers } from './audit/types'
+import { submitLead } from './utils/submitLead'
+import { getUtmParams } from './utils/utm'
+import type { CompleteAuditAnswers, InstantAuditAnswers, LeadInfo } from './audit/types'
 
-type Screen = 'landing' | 'instant-form' | 'complete-form' | 'analyzing' | 'results'
+type Screen = 'landing' | 'instant-form' | 'complete-form' | 'analyzing' | 'lead-capture' | 'results'
 type AuditMode = 'instant' | 'complete'
 
 const STORAGE_PREFIX = 'influx-audit'
@@ -33,8 +37,11 @@ export default function App() {
   // so a page refresh on the results screen just re-derives the same output.
   const [analyzingTarget, setAnalyzingTarget] = useState<AuditMode | null>(null)
 
+  // Captured once on load, before any client-side state changes touch the URL.
+  const [utmParams] = useState(getUtmParams)
+
   const result = useMemo(() => {
-    if (screen !== 'results') return null
+    if (screen !== 'lead-capture' && screen !== 'results') return null
     return mode === 'instant' ? runInstantAudit(instantAnswers) : runAudit(completeAnswers)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, mode])
@@ -68,12 +75,25 @@ export default function App() {
 
   function finishAnalyzing() {
     if (analyzingTarget) setMode(analyzingTarget)
-    setScreen('results')
+    setScreen('lead-capture')
   }
 
   function loadDemoAccount() {
     setCompleteAnswers(getDemoCompleteAuditAnswers())
     setCompleteStep(5)
+  }
+
+  function submitLeadCapture(lead: LeadInfo) {
+    // The audit already ran during "analyzing" — this gate unlocks the reveal, it
+    // doesn't compute anything new, so results can show immediately below regardless
+    // of how (or whether) the Netlify submission below completes.
+    if (result) {
+      const payload = buildAuditLeadPayload({ lead, mode, instantAnswers, completeAnswers, result, utm: utmParams })
+      submitLead(payload).catch((error) => {
+        console.error('[audit-lead] Netlify Forms submission failed:', error)
+      })
+    }
+    setScreen('results')
   }
 
   if (screen === 'landing') {
@@ -116,6 +136,10 @@ export default function App() {
 
   if (screen === 'analyzing') {
     return <AnalyzingPage onComplete={finishAnalyzing} />
+  }
+
+  if (screen === 'lead-capture') {
+    return <LeadCapturePage onSubmit={submitLeadCapture} />
   }
 
   if (result) {

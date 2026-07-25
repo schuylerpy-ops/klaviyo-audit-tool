@@ -3,7 +3,11 @@ import { Button } from '../components/ui/Button'
 import { SelectableCard } from '../components/ui/SelectableCard'
 import { CurrencyInput, NumberInput, PercentInput } from '../components/ui/Field'
 import { QuestionBlock } from '../components/questionnaire/StepShell'
-import { CAMPAIGNS_PER_WEEK_OPTIONS, CORE_FLOW_OPTIONS } from '../audit/questions'
+import {
+  CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION,
+  CAMPAIGNS_PER_WEEK_NUMERIC_OPTIONS,
+  CORE_FLOW_OPTIONS,
+} from '../audit/questions'
 import type { InstantAuditAnswers } from '../audit/types'
 
 interface InstantAuditPageProps {
@@ -64,8 +68,8 @@ export function InstantAuditPage({ answers, onChangeAnswers, onSubmit, onExit, o
           </QuestionBlock>
 
           <QuestionBlock label="Weekly Campaign Volume">
-            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5">
-              {CAMPAIGNS_PER_WEEK_OPTIONS.map((opt) => (
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+              {CAMPAIGNS_PER_WEEK_NUMERIC_OPTIONS.map((opt) => (
                 <SelectableCard
                   key={opt.value}
                   label={opt.label}
@@ -74,6 +78,13 @@ export function InstantAuditPage({ answers, onChangeAnswers, onSubmit, onExit, o
                   compact
                 />
               ))}
+            </div>
+            <div className="mt-2.5">
+              <SelectableCard
+                label={CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.label}
+                selected={answers.campaignsPerWeek === CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.value}
+                onClick={() => patch({ campaignsPerWeek: CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION.value })}
+              />
             </div>
           </QuestionBlock>
 

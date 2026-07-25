@@ -1,6 +1,6 @@
 import { ArrowRight, Zap, ClipboardList } from 'lucide-react'
 import { Button } from '../components/ui/Button'
-import { BRAND } from '../config/brand'
+import { Logo } from '../components/ui/Logo'
 
 interface LandingPageProps {
   onStartInstant: () => void
@@ -13,12 +13,7 @@ export function LandingPage({ onStartInstant, onStartComplete }: LandingPageProp
   return (
     <div className="min-h-screen bg-ink">
       <header className="max-w-6xl mx-auto px-6 pt-8 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-accent to-violet flex items-center justify-center font-heading font-extrabold text-sm">
-            IL
-          </div>
-          <span className="font-heading font-bold text-lg tracking-tight">{BRAND.name}</span>
-        </div>
+        <Logo className="h-7 sm:h-8 w-auto" />
         <span className="hidden sm:block text-xs font-semibold uppercase tracking-widest text-white/35">
           Klaviyo Health Audit
         </span>

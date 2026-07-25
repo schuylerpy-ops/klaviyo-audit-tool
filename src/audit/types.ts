@@ -187,6 +187,16 @@ export interface InstantAuditAnswers {
 }
 
 // ---------------------------------------------------------------------------
+// Lead capture
+// ---------------------------------------------------------------------------
+
+export interface LeadInfo {
+  email: string
+  /** Normalized to a full https:// URL, or '' if not provided. */
+  websiteUrl: string
+}
+
+// ---------------------------------------------------------------------------
 // Scoring / findings / results
 // ---------------------------------------------------------------------------
 

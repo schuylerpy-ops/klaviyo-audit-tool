@@ -6,7 +6,7 @@ import { FindingsAccordion } from '../components/results/FindingsAccordion'
 import { ActionPlanSection } from '../components/results/ActionPlanSection'
 import { BookCallSection } from '../components/results/BookCallSection'
 import { Button } from '../components/ui/Button'
-import { BRAND } from '../config/brand'
+import { Logo } from '../components/ui/Logo'
 import type { AuditResult } from '../audit/types'
 
 interface ResultsPageProps {
@@ -26,12 +26,7 @@ export function ResultsPage({ result, mode, onBackToLanding, onStartCompleteAudi
         >
           <ArrowLeft size={15} /> Start Over
         </button>
-        <div className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded-md bg-gradient-to-br from-accent to-violet flex items-center justify-center font-heading font-extrabold text-xs">
-            IL
-          </div>
-          <span className="font-heading font-bold text-sm tracking-tight">{BRAND.name}</span>
-        </div>
+        <Logo className="h-6 w-auto" />
       </header>
 
       <main className="max-w-6xl mx-auto px-6 pt-8 space-y-16">

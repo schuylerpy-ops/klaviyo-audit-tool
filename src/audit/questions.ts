@@ -49,6 +49,15 @@ export const CAMPAIGNS_PER_WEEK_OPTIONS: Option<CampaignsPerWeek>[] = [
   { value: 'inconsistent', label: 'Inconsistent / varies significantly' },
 ]
 
+/** The numeric options render as a compact card row; "inconsistent" needs its own wider card — see CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION. */
+export const CAMPAIGNS_PER_WEEK_NUMERIC_OPTIONS: Option<CampaignsPerWeek>[] = CAMPAIGNS_PER_WEEK_OPTIONS.filter(
+  (opt) => opt.value !== 'inconsistent',
+)
+
+export const CAMPAIGNS_PER_WEEK_INCONSISTENT_OPTION: Option<CampaignsPerWeek> = CAMPAIGNS_PER_WEEK_OPTIONS.find(
+  (opt) => opt.value === 'inconsistent',
+)!
+
 export const POPUP_DATA_COLLECTION_OPTIONS: Option<PopupDataCollection>[] = [
   { value: 'email_only', label: 'Email only' },
   { value: 'email_sms', label: 'Email + SMS' },

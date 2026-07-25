@@ -5,7 +5,12 @@
       "Bash(rmdir src/assets)",
       "Bash(npx tsc *)",
       "Bash(npm run *)",
-      "Bash(node drive.mjs)"
+      "Bash(node drive.mjs)",
+      "Read(//Users/schuyleryoung/Downloads/**)",
+      "Bash(pkill -f \"vite --port 5183\")",
+      "Bash(lsof -ti:5184)",
+      "Bash(xargs kill)",
+      "Bash(git add *)"
     ]
   }
 }

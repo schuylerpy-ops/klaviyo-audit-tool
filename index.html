@@ -4,14 +4,44 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Influx Labs Klaviyo Audit — find out where your email program is leaving revenue on the table." />
-    <title>Klaviyo Audit | Influx Labs</title>
+    <meta name="description" content="InfluxLabz Klaviyo Audit — find out where your email program is leaving revenue on the table." />
+    <title>Klaviyo Audit | InfluxLabz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
+
+    <!--
+      Static Netlify Forms detection target. Netlify parses the deployed HTML at
+      build/deploy time to discover forms — a client-rendered React form is invisible
+      to that scan, so this plain hidden form declares the field set. The live React
+      lead form in LeadCapturePage.tsx submits to this same form name (audit-lead) via
+      submitLead() in src/utils/submitLead.ts.
+    -->
+    <form name="audit-lead" data-netlify="true" hidden>
+      <input type="email" name="email" />
+      <input type="text" name="websiteUrl" />
+      <input type="text" name="monthlyRevenue" />
+      <input type="text" name="emailListSize" />
+      <input type="text" name="currentEmailAttribution" />
+      <input type="text" name="weeklyCampaignVolume" />
+      <input type="text" name="selectedFlows" />
+      <input type="text" name="healthScore" />
+      <input type="text" name="currentMonthlyEmailRevenue" />
+      <input type="text" name="potentialMonthlyEmailRevenue" />
+      <input type="text" name="monthlyRevenueGap" />
+      <input type="text" name="annualRevenueOpportunity" />
+      <input type="text" name="topThreeOpportunities" />
+      <input type="text" name="createdAt" />
+      <input type="text" name="utm_source" />
+      <input type="text" name="utm_medium" />
+      <input type="text" name="utm_campaign" />
+      <input type="text" name="utm_content" />
+      <input type="text" name="utm_term" />
+    </form>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

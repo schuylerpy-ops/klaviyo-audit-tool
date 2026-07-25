@@ -20,7 +20,8 @@
       lead form in LeadCapturePage.tsx submits to this same form name (audit-lead) via
       submitLead() in src/utils/submitLead.ts.
     -->
-    <form name="audit-lead" data-netlify="true" hidden>
+    <form name="audit-lead" method="POST" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="audit-lead" />
       <input type="email" name="email" />
       <input type="text" name="websiteUrl" />
       <input type="text" name="monthlyRevenue" />

@@ -10,6 +10,7 @@ import { runAudit, runInstantAudit } from './audit/engine'
 import { buildAuditLeadPayload } from './audit/leadPayload'
 import { createEmptyCompleteAuditAnswers, createEmptyInstantAuditAnswers } from './audit/types'
 import { getDemoCompleteAuditAnswers } from './data/demoAccount'
+import { isDemoMode } from './utils/demoMode'
 import { submitLead } from './utils/submitLead'
 import { getUtmParams } from './utils/utm'
 import type { CompleteAuditAnswers, InstantAuditAnswers, LeadInfo } from './audit/types'
@@ -20,16 +21,22 @@ type AuditMode = 'instant' | 'complete'
 const STORAGE_PREFIX = 'influx-audit'
 
 export default function App() {
-  const [screen, setScreen] = useLocalStorage<Screen>(`${STORAGE_PREFIX}:screen`, 'landing')
-  const [mode, setMode] = useLocalStorage<AuditMode>(`${STORAGE_PREFIX}:mode`, 'complete')
-  const [completeStep, setCompleteStep] = useLocalStorage<number>(`${STORAGE_PREFIX}:completeStep`, 1)
+  // /demo or ?demo=true — internal screen-recording mode only, never linked from the
+  // live funnel. Uses its own storage namespace so a demo session never resumes into
+  // (or pollutes) whatever screen the production funnel was left on.
+  const [demoMode] = useState(isDemoMode)
+  const storagePrefix = demoMode ? `${STORAGE_PREFIX}-demo` : STORAGE_PREFIX
+
+  const [screen, setScreen] = useLocalStorage<Screen>(`${storagePrefix}:screen`, 'landing')
+  const [mode, setMode] = useLocalStorage<AuditMode>(`${storagePrefix}:mode`, 'complete')
+  const [completeStep, setCompleteStep] = useLocalStorage<number>(`${storagePrefix}:completeStep`, 1)
 
   const [instantAnswers, setInstantAnswers] = useLocalStorage<InstantAuditAnswers>(
-    `${STORAGE_PREFIX}:instantAnswers`,
+    `${storagePrefix}:instantAnswers`,
     createEmptyInstantAuditAnswers,
   )
   const [completeAnswers, setCompleteAnswers] = useLocalStorage<CompleteAuditAnswers>(
-    `${STORAGE_PREFIX}:completeAnswers`,
+    `${storagePrefix}:completeAnswers`,
     createEmptyCompleteAuditAnswers,
   )
 
@@ -75,7 +82,8 @@ export default function App() {
 
   function finishAnalyzing() {
     if (analyzingTarget) setMode(analyzingTarget)
-    setScreen('lead-capture')
+    // Demo mode skips email capture and Netlify Forms submission entirely.
+    setScreen(demoMode ? 'results' : 'lead-capture')
   }
 
   function loadDemoAccount() {

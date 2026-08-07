@@ -1,1 +1,1 @@
-export const CALENDLY_URL = 'https://calendly.com/influxlabz/klaviyo-audit-breakdown'
+export const CALENDLY_URL = 'https://form.typeform.com/to/Jck4er7F'
